@@ -7,16 +7,20 @@ import org.springframework.ui.set
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.server.ResponseStatusException
+import org.yaml.snakeyaml.internal.Logger
+import kotlin.math.log
 
 @Controller
 class HtmlController(private val repository: ArticleRepository,
 					 private val properties: BlogProperties) {
+	private val logger = Logger.getLogger(this::class.simpleName)
 
 	@GetMapping("/")
 	fun blog(model: Model): String {
 		model["title"] = properties.title
 		model["banner"] = properties.banner
 		model["articles"] = repository.findAllByOrderByAddedAtDesc().map { it.render() }
+		logger.warn("hello")
 		return "blog"
 	}
 
